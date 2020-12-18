@@ -3,7 +3,7 @@ const videoGrid = document.getElementById("video-grid");
 
 // Generate a user with peerjs server
 const myPeer = new Peer(undefined, {
-    host: '/',
+    host: 'http://mymeet.herokuapp.com/',
     port: '3001'
 }); 
 
