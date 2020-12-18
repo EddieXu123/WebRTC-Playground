@@ -1,13 +1,16 @@
 const socket = io("/"); // Socket connects to root path
 const videoGrid = document.getElementById("video-grid");
 
+// Generate a user with peerjs server
 const myPeer = new Peer(undefined, {
     host: '/',
     port: '3001'
-}); // Server generates the own user
+}); 
+
 const myVideo = document.createElement("video");
 myVideo.muted = true; // Mute ourselves (not for others)
 const peers = {};
+
 // Stream our video to others
 navigator.mediaDevices.getUserMedia({
     video: true,
@@ -25,14 +28,14 @@ navigator.mediaDevices.getUserMedia({
 
     socket.on("user-connected", userId => {
         connectToNewUser(userId, stream); // Send our current video stream to the new user
+        console.log("Entered");
     });
 
     socket.on("user-disconnected", userId => {
         if (peers[userId]) peers[userId].close();
-    })
-
-
-})
+        console.log("Exited");
+    });
+});
 
 myPeer.on("open", id => {
     socket.emit("join-room", ROOM_ID, 10);
